@@ -22,7 +22,9 @@ def main():
     run_dir = Path(args.run)
     cfg = Config.load(run_dir / "cfg.json")
     base, tokenizer = load_base(cfg.base_model)
-    model = OmniModel(base, cfg)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    base = base.to(device)
+    model = OmniModel(base, cfg).to(device)
     state = torch.load(run_dir / "model.pt", map_location="cpu")
     model.load_state_dict(state, strict=False)
     hebbian_path = run_dir / "hebbian.pt"
@@ -48,8 +50,8 @@ def main():
         if count >= args.blocks:
             break
         with torch.no_grad():
-            _, loss_omni, _, _, _ = model(batch[:, :-1], batch[:, 1:])
-            loss_base = base(batch[:, :-1], labels=batch[:, 1:]).loss
+            _, loss_omni, _, _, _ = model(batch[:, :-1].to(device), batch[:, 1:].to(device))
+            loss_base = base(batch[:, :-1].to(device), labels=batch[:, 1:].to(device)).loss
         n = batch.size(0) * (batch.size(1) - 1)
         total_omni += loss_omni.item() * n
         total_base += loss_base.item() * n
@@ -62,7 +64,7 @@ def main():
     store = MemoryStore(run_dir / "omni_memory.db")
     with torch.no_grad():
         for i in range(min(5, len(val_ds))):
-            block = val_ds[i].unsqueeze(0)
+            block = val_ds[i].unsqueeze(0).to(device)
             out = base(block, output_hidden_states=True)
             emb = out.hidden_states[-1][0, -1]
             txt = tokenizer.decode(block[0].tolist())[:200]
@@ -77,7 +79,7 @@ def main():
 
     probe = tokenizer(
         "To be, or not to be, that is the question", return_tensors="pt"
-    )["input_ids"]
+    )["input_ids"].to(device)
     with torch.no_grad():
         out = base(probe, output_hidden_states=True)
         emb = out.hidden_states[-1][0, -1]
