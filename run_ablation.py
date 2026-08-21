@@ -74,6 +74,10 @@ def main():
             "--log-every", "50",
         ] + CONFIGS[name] + extra
         output = run(cmd)
+        val_lines = [l.strip() for l in output.splitlines() if "val ppl" in l]
+        step_lines = [l.strip() for l in output.splitlines() if l.startswith("step")]
+        print(f"[{name}] last step: {step_lines[-1] if step_lines else 'n/a'}")
+        print(f"[{name}] val ppl trajectory: {', '.join(v.split()[-1] for v in val_lines[-5:])}")
         if out_dir.joinpath("model.pt").exists():
             output = run([
                 sys.executable, "-m", "omni.eval",
