@@ -4,11 +4,11 @@ import sys
 from pathlib import Path
 
 CONFIGS = [
-    ("scale005_lr3e4", ["--delta-scale", "0.05"]),
+    ("scale005_lr1e4", ["--delta-scale", "0.05", "--lr", "1e-4"]),
     ("scale002_lr1e4", ["--delta-scale", "0.02", "--lr", "1e-4"]),
-    ("scale010_lr3e4", ["--delta-scale", "0.10"]),
+    ("scale010_lr1e4", ["--delta-scale", "0.10", "--lr", "1e-4"]),
     ("scale005_lr3e5", ["--delta-scale", "0.05", "--lr", "3e-5"]),
-    ("scale005_aux01", ["--delta-scale", "0.05", "--aux-coef", "0.1"]),
+    ("scale005_lr1e4_aux01", ["--delta-scale", "0.05", "--lr", "1e-4", "--aux-coef", "0.1"]),
 ]
 
 
