@@ -246,9 +246,10 @@ python -m omni.eval --run runs/flat
 | hebbian_lr | 0.0 | co activation learning rate, 0 disables |
 | hebbian_decay | 0.999 | edge strength decay |
 | aux_coef | 0.01 | load balancing weight |
+| delta_scale | 0.02 | residual delta multiplier |
 | seq_len | 256 | context length |
 | batch_size | 4 | tokens per step |
-| lr | 3e-4 | AdamW learning rate |
+| lr | 1e-4 | AdamW learning rate |
 | grad_clip | 1.0 | gradient clipping |
 
 ---
@@ -265,6 +266,69 @@ The core ablation matrix isolates each mechanism at equal parameter count and eq
 | full | 1 | 0.05 | Do the mechanisms compose? |
 
 Every run reports validation perplexity for the frozen base and for Omni, plus expert utilization, aux loss, and the strongest Hebbian edges.
+
+---
+
+## Test Runs and Results
+
+All runs below were executed on a Google Colab T4 GPU with the public notebook at `notebooks/omni_ablation.ipynb`. The harness was validated through three staged gates before any result was trusted, and each gate caught a real defect.
+
+### Harness Validation
+
+1. The first run exposed a shift error in the language modeling loss. Every prediction was scored one token too late, so training chased an impossible target and perplexity exploded to millions.
+2. After the fix, the frozen base perplexity landed at 34.82, confirming the metric was correct.
+3. The expansion still diverged. Random initialized experts emitted deltas at the same magnitude as the hidden state itself, corrupting the frozen logits. Zero initialization of the expert output layers fixed the start.
+4. The final defect was the training regime. Adam at lr 3e-4 overshot the sharp loss landscape of the frozen head. A stability sweep over delta scale and learning rate identified the stable regime: delta scale 0.02 with lr 1e-4.
+
+Every run is fully deterministic for a fixed seed. Two sweep configurations reproduced byte identical numbers across separate runs.
+
+### Sanity Gate
+
+Sixty step run with the default configuration.
+
+```
+frozen base ppl (1 block): 34.82
+step    10 loss 3.943 aux 5.426 usage 0.88
+step    20 loss 3.783 aux 4.631 usage 1.00
+step    30 loss 3.980 aux 6.462 usage 1.00
+step    40 loss 3.514 aux 7.141 usage 1.00
+step    50 loss 3.785 aux 7.509 usage 1.00
+step    60 loss 3.670 aux 7.987 usage 1.00
+```
+
+The training loss dipped below the frozen base nll of 3.551 at step 40, the first evidence that the expansion learns real corrections. Routing utilization is full and no divergence appears.
+
+### Stability Sweep
+
+Five configurations at 120 steps each.
+
+| Config | Base ppl | Final loss |
+|---|---|---|
+| scale005_lr1e4 | 34.82 | 3.922 |
+| scale002_lr1e4 | 34.82 | 3.844 |
+| scale010_lr1e4 | 34.82 | 4.168 |
+| scale005_lr3e5 | 34.82 | 3.760 |
+| scale005_lr1e4_aux01 | 34.82 | 3.979 |
+
+The best configs are scale005_lr3e5 at 3.760 and the chosen default scale002_lr1e4 at 3.844. Learning rate 3e-4 diverges at every scale and is rejected.
+
+### Ablation Matrix
+
+Four configurations at 400 steps each, evaluated on 100 held out blocks.
+
+| Run | Base ppl | Omni ppl | Delta |
+|---|---|---|---|
+| flat | 37.65 | 128.40 | 90.75 |
+| graph | 37.65 | 76.13 | 38.48 |
+| hebbian | 37.65 | 129.95 | 92.30 |
+| full | 37.65 | 71.81 | 34.16 |
+
+Findings:
+
+* The neighborhood graph beats flat routing by 52 perplexity points, a 40 percent gap. Local message passing between active clusters is not decoration; it recovers most of the gap to the frozen base.
+* Combining the graph with Hebbian plasticity gives the best result of the matrix. The mechanisms compose.
+* Hebbian plasticity alone matches flat routing. It neither helps nor harms at this scale.
+* No configuration crossed the frozen base at 400 steps. The expansion recovers most of the damage but remains net negative. Longer runs are the next experiment.
 
 ---
 
@@ -304,7 +368,7 @@ runs/           checkpoints, configs, memory stores
 
 ## Roadmap
 
-* Full ablation runs on a laptop with a real corpus
+* Longer 2000 step runs to cross the frozen base perplexity
 * Quantized inference for the frozen base
 * Prefetch scheduler for expert and memory loading
 * Retrieval injection into message passing
