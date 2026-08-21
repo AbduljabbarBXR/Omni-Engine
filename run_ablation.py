@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--eval-blocks", type=int, default=100)
     ap.add_argument("--lr", type=float, default=None)
     ap.add_argument("--delta-scale", type=float, default=None)
+    ap.add_argument("--delta-penalty", type=float, default=None)
     ap.add_argument("--aux-coef", type=float, default=None)
     args = ap.parse_args()
 
@@ -51,6 +52,8 @@ def main():
         extra += ["--lr", str(args.lr)]
     if args.delta_scale is not None:
         extra += ["--delta-scale", str(args.delta_scale)]
+    if args.delta_penalty is not None:
+        extra += ["--delta-penalty", str(args.delta_penalty)]
     if args.aux_coef is not None:
         extra += ["--aux-coef", str(args.aux_coef)]
 
@@ -74,9 +77,9 @@ def main():
             "--log-every", "50",
         ] + CONFIGS[name] + extra
         output = run(cmd)
+        loss_lines = [l.strip() for l in output.splitlines() if " loss " in l]
         val_lines = [l.strip() for l in output.splitlines() if "val ppl" in l]
-        step_lines = [l.strip() for l in output.splitlines() if l.startswith("step")]
-        print(f"[{name}] last step: {step_lines[-1] if step_lines else 'n/a'}")
+        print(f"[{name}] last train: {loss_lines[-1] if loss_lines else 'n/a'}")
         print(f"[{name}] val ppl trajectory: {', '.join(v.split()[-1] for v in val_lines[-5:])}")
         if out_dir.joinpath("model.pt").exists():
             output = run([

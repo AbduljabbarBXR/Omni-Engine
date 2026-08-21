@@ -9,6 +9,8 @@ CONFIGS = [
     ("scale010_lr1e4", ["--delta-scale", "0.10", "--lr", "1e-4"]),
     ("scale005_lr3e5", ["--delta-scale", "0.05", "--lr", "3e-5"]),
     ("scale005_lr1e4_aux01", ["--delta-scale", "0.05", "--lr", "1e-4", "--aux-coef", "0.1"]),
+    ("pen01_scale002_lr1e4", ["--delta-scale", "0.02", "--lr", "1e-4", "--delta-penalty", "0.1"]),
+    ("pen1_scale002_lr1e4", ["--delta-scale", "0.02", "--lr", "1e-4", "--delta-penalty", "1.0"]),
 ]
 
 

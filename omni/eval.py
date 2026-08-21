@@ -50,7 +50,7 @@ def main():
         if count >= args.blocks:
             break
         with torch.no_grad():
-            _, loss_omni, _, _, _ = model(batch.to(device), batch.to(device))
+            _, loss_omni, _, _, _, _ = model(batch.to(device), batch.to(device))
             loss_base = base(batch.to(device), labels=batch.to(device)).loss
         n = batch.size(0) * (batch.size(1) - 1)
         total_omni += loss_omni.item() * n

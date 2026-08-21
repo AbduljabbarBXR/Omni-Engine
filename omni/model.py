@@ -43,6 +43,7 @@ class OmniModel(nn.Module):
         hidden = out.hidden_states
         final = hidden[-1]
         aux_total = torch.tensor(0.0, device=final.device)
+        delta_sq = torch.tensor(0.0, device=final.device)
         usages = []
         ifls = []
         for i, block in enumerate(self.expert_layers):
@@ -52,7 +53,9 @@ class OmniModel(nn.Module):
                 prior = self.hebbian[i].prior().to(h.device)
             mp = self.message_passing[i] if self.message_passing is not None else None
             delta, aux, usage, ifl = block(h, edge_prior=prior, message_passing=mp)
-            final = final + (delta * self.cfg.delta_scale).half()
+            scaled = delta * self.cfg.delta_scale
+            final = final + scaled.half()
+            delta_sq = delta_sq + (scaled ** 2).mean()
             aux_total = aux_total + aux
             usages.append(usage)
             ifls.append(ifl)
@@ -63,4 +66,4 @@ class OmniModel(nn.Module):
                 logits[:, :-1].reshape(-1, logits.size(-1)),
                 labels[:, 1:].reshape(-1),
             )
-        return logits, loss, aux_total, usages, ifls
+        return logits, loss, aux_total, delta_sq, usages, ifls

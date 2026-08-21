@@ -16,6 +16,8 @@ class Config:
     hebbian_strength: float = 0.1
     aux_coef: float = 0.01
     delta_scale: float = 0.02
+    delta_penalty: float = 0.0
+    weight_decay: float = 0.01
     seed: int = 42
     seq_len: int = 256
     batch_size: int = 4

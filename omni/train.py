@@ -40,6 +40,8 @@ def main():
     ap.add_argument("--graph-rounds", type=int, default=0)
     ap.add_argument("--hebbian-lr", type=float, default=0.0)
     ap.add_argument("--delta-scale", type=float, default=0.02)
+    ap.add_argument("--delta-penalty", type=float, default=0.0)
+    ap.add_argument("--weight-decay", type=float, default=0.01)
     ap.add_argument("--aux-coef", type=float, default=0.01)
     ap.add_argument("--log-every", type=int, default=10)
     args = ap.parse_args()
@@ -53,6 +55,8 @@ def main():
         graph_rounds=args.graph_rounds,
         hebbian_lr=args.hebbian_lr,
         delta_scale=args.delta_scale,
+        delta_penalty=args.delta_penalty,
+        weight_decay=args.weight_decay,
         aux_coef=args.aux_coef,
         lr=args.lr,
         seq_len=args.seq_len,
@@ -90,7 +94,7 @@ def main():
     loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True, drop_last=True)
     print(f"tokens: {n_tokens} train blocks: {len(train_ds)} val blocks: {len(val_ds)}", flush=True)
 
-    optimizer = AdamW(trainable, lr=cfg.lr, weight_decay=0.01)
+    optimizer = AdamW(trainable, lr=cfg.lr, weight_decay=cfg.weight_decay)
     store = MemoryStore(out_dir / "omni_memory.db")
 
     def eval_ppl(dataset, max_blocks=64):
@@ -103,7 +107,7 @@ def main():
             if count >= max_blocks:
                 break
             with torch.no_grad():
-                _, loss, _, _, _ = model(batch.to(device), batch.to(device))
+                _, loss, _, _, _, _ = model(batch.to(device), batch.to(device))
             total_nll += loss.item() * batch.size(0) * (batch.size(1) - 1)
             total_tok += batch.size(0) * (batch.size(1) - 1)
             count += 1
@@ -132,8 +136,8 @@ def main():
                 break
             idx = torch.randint(0, len(train_ds), (cfg.batch_size,))
             batch = torch.stack([train_ds[int(j)] for j in idx]).to(device)
-            logits, loss, aux, usages, ifls = model(batch, batch)
-            total = loss + cfg.aux_coef * aux
+            logits, loss, aux, delta_sq, usages, ifls = model(batch, batch)
+            total = loss + cfg.aux_coef * aux + cfg.delta_penalty * delta_sq
             optimizer.zero_grad()
             total.backward()
             torch.nn.utils.clip_grad_norm_(trainable, cfg.grad_clip)
@@ -145,7 +149,7 @@ def main():
             if step % args.log_every == 0:
                 secs = (time.time() - t0) / step
                 print(f"step {step:5d} loss {loss.item():.3f} aux {aux.item():.3f} "
-                      f"usage {np.mean(usages):.2f} {secs:.1f}s/step",
+                      f"delta {delta_sq.item():.4f} usage {np.mean(usages):.2f} {secs:.1f}s/step",
                       flush=True,
                 )
             if step % 100 == 0:
