@@ -15,11 +15,11 @@ class Config:
     hebbian_decay: float = 0.999
     hebbian_strength: float = 0.1
     aux_coef: float = 0.01
-    delta_scale: float = 0.05
+    delta_scale: float = 0.02
     seed: int = 42
     seq_len: int = 256
     batch_size: int = 4
-    lr: float = 3e-4
+    lr: float = 1e-4
     grad_clip: float = 1.0
 
     def save(self, path):
