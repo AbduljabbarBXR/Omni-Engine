@@ -99,7 +99,7 @@ def main():
             if count >= max_blocks:
                 break
             with torch.no_grad():
-                _, loss, _, _, _ = model(batch[:, :-1].to(device), batch[:, 1:].to(device))
+                _, loss, _, _, _ = model(batch.to(device), batch.to(device))
             total_nll += loss.item() * batch.size(0) * (batch.size(1) - 1)
             total_tok += batch.size(0) * (batch.size(1) - 1)
             count += 1
@@ -112,7 +112,7 @@ def main():
     with torch.no_grad():
         vblock = val_ds[0].unsqueeze(0).to(device)
         base_ppl = float(np.exp(
-            base(vblock[:, :-1], labels=vblock[:, 1:]).loss.item()
+            base(vblock, labels=vblock).loss.item()
         ))
     print(f"frozen base ppl (1 block): {base_ppl:.2f}", flush=True)
 
@@ -128,7 +128,7 @@ def main():
                 break
             idx = torch.randint(0, len(train_ds), (cfg.batch_size,))
             batch = torch.stack([train_ds[int(j)] for j in idx]).to(device)
-            logits, loss, aux, usages, ifls = model(batch[:, :-1], batch[:, 1:])
+            logits, loss, aux, usages, ifls = model(batch, batch)
             total = loss + cfg.aux_coef * aux
             optimizer.zero_grad()
             total.backward()
