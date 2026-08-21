@@ -19,6 +19,9 @@ class ExpertBlock(nn.Module):
         )
         self.n_experts = n_experts
         self.top_k = top_k
+        for ex in self.experts:
+            nn.init.zeros_(ex[2].weight)
+            nn.init.zeros_(ex[2].bias)
 
     def forward(self, x, edge_prior=None, message_passing=None):
         B, T, D = x.shape
