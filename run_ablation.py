@@ -41,7 +41,18 @@ def main():
     ap.add_argument("--out", default="runs/ablation")
     ap.add_argument("--runs", default="flat,graph,hebbian,full")
     ap.add_argument("--eval-blocks", type=int, default=100)
+    ap.add_argument("--lr", type=float, default=None)
+    ap.add_argument("--delta-scale", type=float, default=None)
+    ap.add_argument("--aux-coef", type=float, default=None)
     args = ap.parse_args()
+
+    extra = []
+    if args.lr is not None:
+        extra += ["--lr", str(args.lr)]
+    if args.delta_scale is not None:
+        extra += ["--delta-scale", str(args.delta_scale)]
+    if args.aux_coef is not None:
+        extra += ["--aux-coef", str(args.aux_coef)]
 
     out_root = Path(args.out)
     out_root.mkdir(parents=True, exist_ok=True)
@@ -61,7 +72,7 @@ def main():
             "--base", args.base,
             "--out", str(out_dir),
             "--log-every", "50",
-        ] + CONFIGS[name]
+        ] + CONFIGS[name] + extra
         output = run(cmd)
         if out_dir.joinpath("model.pt").exists():
             output = run([

@@ -39,6 +39,8 @@ def main():
     ap.add_argument("--mid-dim", type=int, default=256)
     ap.add_argument("--graph-rounds", type=int, default=0)
     ap.add_argument("--hebbian-lr", type=float, default=0.0)
+    ap.add_argument("--delta-scale", type=float, default=0.05)
+    ap.add_argument("--aux-coef", type=float, default=0.01)
     ap.add_argument("--log-every", type=int, default=10)
     args = ap.parse_args()
 
@@ -50,6 +52,8 @@ def main():
         mid_dim=args.mid_dim,
         graph_rounds=args.graph_rounds,
         hebbian_lr=args.hebbian_lr,
+        delta_scale=args.delta_scale,
+        aux_coef=args.aux_coef,
         lr=args.lr,
         seq_len=args.seq_len,
         batch_size=args.batch_size,
