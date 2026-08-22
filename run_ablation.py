@@ -37,6 +37,7 @@ def main():
     ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--seq-len", type=int, default=256)
     ap.add_argument("--data", default="data/tinyshakespeare.txt")
+    ap.add_argument("--eval-data", default=None)
     ap.add_argument("--base", default="models/pythia-160m-deduped")
     ap.add_argument("--out", default="runs/ablation")
     ap.add_argument("--runs", default="flat,graph,hebbian,full")
@@ -82,10 +83,11 @@ def main():
         print(f"[{name}] last train: {loss_lines[-1] if loss_lines else 'n/a'}")
         print(f"[{name}] val ppl trajectory: {', '.join(v.split()[-1] for v in val_lines[-5:])}")
         if out_dir.joinpath("model.pt").exists():
+            eval_data = args.eval_data or args.data
             output = run([
                 sys.executable, "-m", "omni.eval",
                 "--run", str(out_dir),
-                "--data", args.data,
+                "--data", eval_data,
                 "--blocks", str(args.eval_blocks),
             ])
         base_ppl, omni_ppl = parse_ppl(output)
