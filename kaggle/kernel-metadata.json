@@ -1,0 +1,11 @@
+{
+  "id": "jamalkt/omni-engine-run",
+  "title": "Omni Engine Run",
+  "code_file": "kaggle_run.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "machine_shape": "NVIDIA T4 x2"
+}
