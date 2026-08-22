@@ -1,7 +1,7 @@
 {
-  "id": "jamalkt/omni-engine-firming-run",
-  "title": "Omni Engine Firming Run",
-  "code_file": "firming_kernel.ipynb",
+  "id": "jamalkt/omni-engine-slice1-run",
+  "title": "Omni Engine Slice 1 Run",
+  "code_file": "slice1_kernel.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,

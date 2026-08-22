@@ -392,6 +392,19 @@ The development loop is: train and run ablations on a laptop, then ship the chec
 
 ---
 
+## Output Harness
+
+The first slice of the dual harness: output side experts that read the top 64 candidate logits and correct the model's own prediction distribution. One of four output experts is selected per token, with the same zero init, delta scale and delta penalty discipline as the input side.
+
+| Run | Base | Best without harness | With output harness | Gain |
+|---|---|---|---|---|
+| WikiText | 49.44 | 33.64 | 33.53 | -0.11 |
+| Shakespeare | 37.31 | 31.36 | 31.32 | -0.04 |
+
+The self correction mechanism improves both domains and harms neither. The effect is small but consistent, and training stays stable to 2000 steps. The next slice adds the bridge: input side states informing the output router.
+
+---
+
 ## Firming Runs
 
 Three questions remained after the generalization gate: does the graph advantage appear at 400 steps on WikiText, does learning the edges matter, and does the crossing reproduce under a different seed. One kernel run answered all three on WikiText.
