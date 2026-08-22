@@ -390,6 +390,58 @@ The development loop is: train and run ablations on a laptop, then ship the chec
 
 ---
 
+## Generation Demo
+
+The trained model speaks. The demo kernel generates from the 2000 step Shakespeare checkpoint with temperature 0.8 and top k 40. Four prompts, sixty tokens each, seconds per generation on a GPU.
+
+Prompt: To be, or not to be
+
+```
+, And if you have no time for my woes,
+Take my leave, and if you have no time,
+I'll leave you be.
+
+SIR JOHN EDWARD:
+Good night, dear.
+
+GARY:
+Good night, good night.
+```
+
+Prompt: All the world's a stage
+
+```
+ away!
+The Londoners and the Frenchmen of the day,
+You know, are all the gulf of your life
+And are now but to me a stage away!
+
+KARMA:
+We're all here, in the city of Stamford!
+```
+
+Prompt: The course of true love never did run smooth
+
+```
+.
+
+GREAT POST:
+I am a lover of great women, they are not the be all and end all of the manhood,
+And when you are with all, in your true heart, it makes you whole
+And so, I am thankful and glad of you, I
+```
+
+Prompt: What light through yonder window breaks
+
+```
+The window, then, has no light; it is an abyss of darkness,
+And to the right is a dim...
+```
+
+The outputs show the model learned the play format: character headers, speech structure, poetic register, and thematic continuation of the prompt. The demo kernel and the checkpoint dataset are on Kaggle, and generate.py reproduces these locally.
+
+---
+
 ## Repository Layout
 
 ```

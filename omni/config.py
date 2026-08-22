@@ -11,6 +11,7 @@ class Config:
     mid_dim: int = 256
     graph_rounds: int = 0
     beta: float = 0.5
+    edge_mode: str = "learned"
     hebbian_lr: float = 0.0
     hebbian_decay: float = 0.999
     hebbian_strength: float = 0.1

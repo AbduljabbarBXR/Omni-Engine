@@ -20,12 +20,19 @@ def small_world(n, k=2, p=0.2, seed=0):
 
 
 class MessagePassing(nn.Module):
-    def __init__(self, n_experts, adj, rounds, beta):
+    def __init__(self, n_experts, adj, rounds, beta, mode="learned"):
         super().__init__()
         self.register_buffer("adj", adj)
-        self.W = nn.Parameter(adj * 0.05)
+        self.mode = mode
         self.rounds = rounds
         self.beta = beta
+        if mode == "learned":
+            self.W = nn.Parameter(adj * 0.05)
+        elif mode == "fixed":
+            self.register_buffer("W", torch.randn(n_experts, n_experts) * adj * 0.05)
+        else:
+            degrees = adj.sum(1, keepdim=True).clamp(min=1.0)
+            self.register_buffer("W", adj / degrees)
 
     def forward(self, per, ifl):
         S, n, D = per.shape

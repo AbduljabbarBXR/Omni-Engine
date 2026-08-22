@@ -21,7 +21,8 @@ class OmniModel(nn.Module):
             nn.ModuleList(
                 [
                     MessagePassing(
-                        cfg.n_experts, small_world(cfg.n_experts), cfg.graph_rounds, cfg.beta
+                        cfg.n_experts, small_world(cfg.n_experts), cfg.graph_rounds,
+                        cfg.beta, cfg.edge_mode,
                     )
                     for _ in range(cfg.n_expert_layers)
                 ]

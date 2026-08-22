@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--delta-scale", type=float, default=None)
     ap.add_argument("--delta-penalty", type=float, default=None)
     ap.add_argument("--aux-coef", type=float, default=None)
+    ap.add_argument("--edge-mode", default=None)
+    ap.add_argument("--seed", type=int, default=None)
     args = ap.parse_args()
 
     extra = []
@@ -57,6 +59,10 @@ def main():
         extra += ["--delta-penalty", str(args.delta_penalty)]
     if args.aux_coef is not None:
         extra += ["--aux-coef", str(args.aux_coef)]
+    if args.edge_mode is not None:
+        extra += ["--edge-mode", str(args.edge_mode)]
+    if args.seed is not None:
+        extra += ["--seed", str(args.seed)]
 
     out_root = Path(args.out)
     out_root.mkdir(parents=True, exist_ok=True)

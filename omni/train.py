@@ -38,6 +38,8 @@ def main():
     ap.add_argument("--n-expert-layers", type=int, default=4)
     ap.add_argument("--mid-dim", type=int, default=256)
     ap.add_argument("--graph-rounds", type=int, default=0)
+    ap.add_argument("--edge-mode", default="learned")
+    ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--hebbian-lr", type=float, default=0.0)
     ap.add_argument("--delta-scale", type=float, default=0.02)
     ap.add_argument("--delta-penalty", type=float, default=0.0)
@@ -53,6 +55,8 @@ def main():
         n_expert_layers=args.n_expert_layers,
         mid_dim=args.mid_dim,
         graph_rounds=args.graph_rounds,
+        edge_mode=args.edge_mode,
+        seed=args.seed,
         hebbian_lr=args.hebbian_lr,
         delta_scale=args.delta_scale,
         delta_penalty=args.delta_penalty,
@@ -66,6 +70,7 @@ def main():
     np.random.seed(cfg.seed)
     random.seed(cfg.seed)
     torch.set_num_threads(1)
+    torch.backends.cudnn.deterministic = True
 
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)

@@ -1,10 +1,11 @@
 {
-  "id": "jamalkt/omni-wiki",
-  "title": "Omni Engine WikiText Run",
-  "code_file": "wiki_kernel.ipynb",
+  "id": "jamalkt/omni-engine-demo",
+  "title": "Omni Engine Demo",
+  "code_file": "demo_kernel.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,
   "enable_gpu": true,
-  "enable_internet": true
+  "enable_internet": true,
+  "dataset_sources": ["jamalkt/omni-full-checkpoint"]
 }
