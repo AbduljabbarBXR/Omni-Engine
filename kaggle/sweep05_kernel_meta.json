@@ -1,0 +1,10 @@
+{
+  "id": "jamalkt/omni-engine-sweep05-run",
+  "title": "Omni Engine Sweep 05 Run",
+  "code_file": "sweep05_kernel.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true
+}
