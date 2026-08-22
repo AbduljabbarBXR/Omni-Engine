@@ -405,6 +405,17 @@ The self correction mechanism improves both domains and harms neither. The effec
 
 The bridge variant, where the corrected hidden state also feeds the output router, was tested and produced a null result: WikiText 33.52 and Shakespeare 31.37, statistically identical to the bridge free run. The router's own logits already carry the signal it needs.
 
+## Scale and Data
+
+Two further gates: does the crossing hold at a smaller base, and does more data widen the delta.
+
+| Run | Base | Omni ppl | Delta | Improvement |
+|---|---|---|---|---|
+| Pythia 70M, WikiText 2 | 90.29 | 56.24 | -34.05 | 38 percent |
+| Pythia 160M, WikiText 103 slice | 49.44 | 33.50 | -15.94 | 32 percent |
+
+The crossing holds at 70M and is stronger in percentage terms. The smaller the base, the more the expansion lifts it. More data helps modestly at equal steps and buys headroom: the validation curve kept descending on the larger corpus where the smaller one flattened.
+
 ---
 
 ## Firming Runs
