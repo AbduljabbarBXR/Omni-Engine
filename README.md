@@ -390,6 +390,29 @@ The development loop is: train and run ablations on a laptop, then ship the chec
 
 ---
 
+## Firming Runs
+
+Three questions remained after the generalization gate: does the graph advantage appear at 400 steps on WikiText, does learning the edges matter, and does the crossing reproduce under a different seed. One kernel run answered all three on WikiText.
+
+| Run | Steps | Base ppl | Omni ppl | Delta |
+|---|---|---|---|---|
+| flat | 400 | 49.44 | 35.73 | -13.71 |
+| graph | 400 | 49.44 | 35.76 | -13.68 |
+| graph fixed edges | 400 | 49.44 | 35.90 | -13.54 |
+| graph pooling | 400 | 49.44 | 35.82 | -13.62 |
+| full seed 7 | 2000 | 49.44 | 33.67 | -15.77 |
+| full seed 42 | 2000 | 49.44 | 33.64 | -15.80 |
+
+Findings:
+
+* The crossing reproduces under a different seed within 0.03 perplexity points. The core result is deterministic.
+* The graph convergence advantage does not reproduce on WikiText. Flat and graph tie at 400 steps there. The convergence speed claim is Shakespeare specific.
+* The edge mode ordering, learned below pooling below fixed, points the right way but the gaps are within noise. The mechanism of the graph advantage is not yet isolated.
+
+The honest summary: the sparse expansion with bounded deltas improves the frozen base on two domains reproducibly. The graph provides an early training advantage on one domain and parity elsewhere.
+
+---
+
 ## Generation Demo
 
 The trained model speaks. The demo kernel generates from the 2000 step Shakespeare checkpoint with temperature 0.8 and top k 40. Four prompts, sixty tokens each, seconds per generation on a GPU.

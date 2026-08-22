@@ -1,11 +1,10 @@
 {
-  "id": "jamalkt/omni-engine-demo",
-  "title": "Omni Engine Demo",
-  "code_file": "demo_kernel.ipynb",
+  "id": "jamalkt/omni-engine-firming-run",
+  "title": "Omni Engine Firming Run",
+  "code_file": "firming_kernel.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,
   "enable_gpu": true,
-  "enable_internet": true,
-  "dataset_sources": ["jamalkt/omni-full-checkpoint"]
+  "enable_internet": true
 }
