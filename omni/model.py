@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from .experts import ExpertBlock
 from .graph import HebbianBank, MessagePassing, small_world
+from .outharness import OutputHarness
 
 
 class OmniModel(nn.Module):
@@ -38,6 +39,14 @@ class OmniModel(nn.Module):
             if cfg.hebbian_lr > 0.0
             else None
         )
+        self.output_harness = (
+            OutputHarness(
+                cfg.out_top_k, cfg.n_out_experts, cfg.out_expert_top_k,
+                cfg.out_mid_dim, cfg.delta_scale,
+            )
+            if cfg.out_harness
+            else None
+        )
 
     def forward(self, input_ids, labels=None):
         out = self.base(input_ids, output_hidden_states=True)
@@ -61,6 +70,11 @@ class OmniModel(nn.Module):
             usages.append(usage)
             ifls.append(ifl)
         logits = self.base.get_output_embeddings()(final)
+        if self.output_harness is not None:
+            logits, out_aux, out_usage, out_delta = self.output_harness(logits)
+            aux_total = aux_total + out_aux
+            delta_sq = delta_sq + out_delta
+            usages.append(out_usage)
         loss = None
         if labels is not None:
             loss = F.cross_entropy(

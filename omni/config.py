@@ -12,6 +12,11 @@ class Config:
     graph_rounds: int = 0
     beta: float = 0.5
     edge_mode: str = "learned"
+    out_harness: bool = False
+    out_top_k: int = 64
+    n_out_experts: int = 4
+    out_expert_top_k: int = 1
+    out_mid_dim: int = 128
     hebbian_lr: float = 0.0
     hebbian_decay: float = 0.999
     hebbian_strength: float = 0.1

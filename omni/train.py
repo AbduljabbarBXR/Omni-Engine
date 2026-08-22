@@ -17,7 +17,7 @@ from .model import OmniModel
 
 
 def save_checkpoint(model, out_dir, cfg):
-    keys = ["expert_layers", "message_passing"]
+    keys = ["expert_layers", "message_passing", "output_harness"]
     state = {k: v.cpu() for k, v in model.state_dict().items() if k.startswith(tuple(keys))}
     torch.save(state, out_dir / "model.pt")
     if model.hebbian is not None:
@@ -40,6 +40,10 @@ def main():
     ap.add_argument("--graph-rounds", type=int, default=0)
     ap.add_argument("--edge-mode", default="learned")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--out-harness", action="store_true")
+    ap.add_argument("--out-top-k", type=int, default=64)
+    ap.add_argument("--n-out-experts", type=int, default=4)
+    ap.add_argument("--out-expert-top-k", type=int, default=1)
     ap.add_argument("--hebbian-lr", type=float, default=0.0)
     ap.add_argument("--delta-scale", type=float, default=0.02)
     ap.add_argument("--delta-penalty", type=float, default=0.0)
@@ -56,6 +60,10 @@ def main():
         mid_dim=args.mid_dim,
         graph_rounds=args.graph_rounds,
         edge_mode=args.edge_mode,
+        out_harness=args.out_harness,
+        out_top_k=args.out_top_k,
+        n_out_experts=args.n_out_experts,
+        out_expert_top_k=args.out_expert_top_k,
         seed=args.seed,
         hebbian_lr=args.hebbian_lr,
         delta_scale=args.delta_scale,
