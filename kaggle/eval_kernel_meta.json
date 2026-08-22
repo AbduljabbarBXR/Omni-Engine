@@ -1,0 +1,11 @@
+{
+  "id": "jamalkt/omni-eval",
+  "title": "Omni Engine Eval",
+  "code_file": "eval_kernel.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["jamalkt/omni-checkpoints"]
+}

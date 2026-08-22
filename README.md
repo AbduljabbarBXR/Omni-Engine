@@ -330,6 +330,28 @@ Findings:
 * Hebbian plasticity alone matches flat routing. It neither helps nor harms at this scale.
 * No configuration crossed the frozen base at 400 steps. The expansion recovers most of the damage but remains net negative. Longer runs are the next experiment.
 
+### Long Horizon Runs with Delta Penalty
+
+A 400 step run is a short window. The first 2000 step runs diverged catastrophically because nothing bounded the residual deltas. The fix is a delta magnitude penalty in the loss, which creates an equilibrium: a delta only survives if it reduces loss enough to justify its size.
+
+Four configurations at 2000 steps each with delta penalty 0.1, evaluated on 100 held out blocks.
+
+| Run | Base ppl | Omni ppl | Delta |
+|---|---|---|---|
+| flat | 37.31 | 31.38 | -5.93 |
+| graph | 37.31 | 31.38 | -5.93 |
+| hebbian | 37.31 | 31.37 | -5.94 |
+| full | 37.31 | 31.36 | -5.95 |
+
+Findings:
+
+* All four configurations cross the frozen base. The expansion is net positive, a 16 percent improvement.
+* Training is stable over 2000 steps: loss descends to 3.40, delta magnitude stays bounded near 0.17, routing utilization stays full.
+* The graph advantage seen at 400 steps disappears at 2000 steps. The graph speeds convergence but does not change the asymptote.
+* Convergence speed still matters for the on device setting, where learning happens in short bursts. The graph is the right tool for adaptive learning even without an asymptotic gain.
+
+The full console log of this run is stored under `runs/` artifacts in the repository history.
+
 ---
 
 ## On Device Deployment
