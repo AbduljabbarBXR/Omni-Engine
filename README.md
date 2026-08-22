@@ -1,5 +1,7 @@
 # Omni Engine
 
+The full technical report is at [docs/TECHNICAL_REPORT.md](docs/TECHNICAL_REPORT.md).
+
 A hybrid sparse neural system that fuses a frozen pretrained language model with learnable sparse expert clusters, localized neighborhood communication, Hebbian plasticity, and a SQLite memory hierarchy. The design is inspired by biological cortical columns: a dense base model provides structural linguistic memory while modular sparse clusters handle active localized computation. Only a tiny fraction of the network is active for any given input, mirroring neural firing patterns and drastically reducing compute per token.
 
 The system is built to run on constrained devices. The full training and ablation harness runs on any laptop, and the resulting model with its memory store is small enough to operate on a phone.
