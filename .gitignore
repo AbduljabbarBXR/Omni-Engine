@@ -3,3 +3,4 @@ __pycache__/
 runs/
 models/
 *.log
+docs/JOURNAL.md
