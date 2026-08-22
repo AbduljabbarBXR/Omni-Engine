@@ -35,7 +35,11 @@ def main():
 
     with open(args.data, encoding="utf-8", errors="ignore") as f:
         text = f.read()
-    full_ids = tokenizer(text, return_tensors="pt", truncation=True)["input_ids"][0]
+    enc = tokenizer(text, return_tensors="pt", truncation=False)
+    if isinstance(enc, list):
+        full_ids = torch.cat([e["input_ids"][0] for e in enc])
+    else:
+        full_ids = enc["input_ids"][0]
     n_train = int(full_ids.numel() * 0.95)
     val_ds = TextDataset(full_ids[n_train:], cfg.seq_len)
     loader = DataLoader(val_ds, batch_size=cfg.batch_size)

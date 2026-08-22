@@ -1,7 +1,7 @@
 {
-  "id": "jamalkt/omni-engine-qwen05-run",
-  "title": "Omni Engine Qwen 05 Run",
-  "code_file": "qwen05_kernel.ipynb",
+  "id": "jamalkt/omni-engine-qwen05b-run",
+  "title": "Omni Engine Qwen 05B Run",
+  "code_file": "qwen05b_kernel.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,
