@@ -354,6 +354,24 @@ Findings:
 
 ![Perplexity results at 2000 steps](docs/results.svg)
 
+### Generalization on WikiText
+
+The same ablation run on WikiText 2, a completely different domain of encyclopedia prose, evaluated on the dataset's own held out validation file.
+
+| Run | Base ppl | Omni ppl | Delta |
+|---|---|---|---|
+| flat | 49.44 | 33.65 | -15.79 |
+| graph | 49.44 | 33.63 | -15.81 |
+| hebbian | 49.44 | 33.64 | -15.80 |
+| full | 49.44 | 33.64 | -15.80 |
+
+Findings:
+
+* The crossing generalizes. Every configuration beats the frozen base on a second, unrelated domain.
+* The improvement is larger where the base is weaker: 32 percent on WikiText versus 16 percent on Shakespeare. The expansion corrects more when the frozen base struggles more.
+* The graph verdict is confirmed on both domains: it speeds convergence at 400 steps but ties at 2000 steps. Convergence speed is its role.
+* Training stays stable on both domains: bounded deltas, full utilization, descending validation perplexity to the last step.
+
 The full console log of this run is stored under `runs/` artifacts in the repository history.
 
 ---
