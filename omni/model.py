@@ -43,6 +43,7 @@ class OmniModel(nn.Module):
             OutputHarness(
                 cfg.out_top_k, cfg.n_out_experts, cfg.out_expert_top_k,
                 cfg.out_mid_dim, cfg.delta_scale,
+                hidden_dim=d, bridge_dim=cfg.bridge_dim if cfg.out_bridge else 0,
             )
             if cfg.out_harness
             else None
@@ -71,7 +72,7 @@ class OmniModel(nn.Module):
             ifls.append(ifl)
         logits = self.base.get_output_embeddings()(final)
         if self.output_harness is not None:
-            logits, out_aux, out_usage, out_delta = self.output_harness(logits)
+            logits, out_aux, out_usage, out_delta = self.output_harness(logits, final)
             aux_total = aux_total + out_aux
             delta_sq = delta_sq + out_delta
             usages.append(out_usage)

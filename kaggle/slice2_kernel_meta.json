@@ -1,0 +1,10 @@
+{
+  "id": "jamalkt/omni-engine-slice2-run",
+  "title": "Omni Engine Slice 2 Run",
+  "code_file": "slice2_kernel.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true
+}

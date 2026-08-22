@@ -17,6 +17,8 @@ class Config:
     n_out_experts: int = 4
     out_expert_top_k: int = 1
     out_mid_dim: int = 128
+    out_bridge: bool = False
+    bridge_dim: int = 64
     hebbian_lr: float = 0.0
     hebbian_decay: float = 0.999
     hebbian_strength: float = 0.1

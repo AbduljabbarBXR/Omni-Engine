@@ -4,12 +4,19 @@ import torch.nn.functional as F
 
 
 class OutputHarness(nn.Module):
-    def __init__(self, top_k, n_experts, expert_top_k, mid_dim, delta_scale):
+    def __init__(self, top_k, n_experts, expert_top_k, mid_dim, delta_scale, hidden_dim=768, bridge_dim=0):
         super().__init__()
         self.top_k = top_k
         self.n_experts = n_experts
         self.expert_top_k = expert_top_k
-        self.router = nn.Linear(top_k, n_experts)
+        self.bridge_dim = bridge_dim
+        router_in = top_k + bridge_dim
+        self.router = nn.Linear(router_in, n_experts)
+        self.bridge = None
+        if bridge_dim > 0:
+            self.bridge = nn.Linear(hidden_dim, bridge_dim)
+            nn.init.zeros_(self.bridge.weight)
+            nn.init.zeros_(self.bridge.bias)
         self.experts = nn.ModuleList(
             [
                 nn.Sequential(
@@ -25,12 +32,16 @@ class OutputHarness(nn.Module):
             nn.init.zeros_(ex[2].weight)
             nn.init.zeros_(ex[2].bias)
 
-    def forward(self, logits):
+    def forward(self, logits, hidden=None):
         B, T, V = logits.shape
         topv, topi = torch.topk(logits, self.top_k, dim=-1)
         S = B * T
         flat = topv.reshape(S, self.top_k).float()
-        router_logits = self.router(flat)
+        if self.bridge is not None and hidden is not None:
+            ctx = self.bridge(hidden.reshape(S, -1).float())
+            router_logits = self.router(torch.cat([flat, ctx], dim=-1))
+        else:
+            router_logits = self.router(flat)
         probs = F.softmax(router_logits, dim=-1)
         topw, topn = torch.topk(probs, self.expert_top_k, dim=-1)
         w = topw / (topw.sum(-1, keepdim=True) + 1e-8)

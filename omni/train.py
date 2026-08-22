@@ -41,6 +41,7 @@ def main():
     ap.add_argument("--edge-mode", default="learned")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out-harness", action="store_true")
+    ap.add_argument("--out-bridge", action="store_true")
     ap.add_argument("--out-top-k", type=int, default=64)
     ap.add_argument("--n-out-experts", type=int, default=4)
     ap.add_argument("--out-expert-top-k", type=int, default=1)
@@ -61,6 +62,7 @@ def main():
         graph_rounds=args.graph_rounds,
         edge_mode=args.edge_mode,
         out_harness=args.out_harness,
+        out_bridge=args.out_bridge,
         out_top_k=args.out_top_k,
         n_out_experts=args.n_out_experts,
         out_expert_top_k=args.out_expert_top_k,
