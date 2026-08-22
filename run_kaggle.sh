@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
-pip install -q "numpy<2" "torch==2.2.2" "transformers==4.46.3" --extra-index-url https://download.pytorch.org/whl/cu118
+pip uninstall -y -q torchvision torchaudio 2>/dev/null || true
+pip install -q "numpy<2" "torch==2.2.2" "transformers==4.44.2" --extra-index-url https://download.pytorch.org/whl/cu118
+python -c "
+import traceback
+try:
+    from transformers.models.gpt_neox.modeling_gpt_neox import GPTNeoXForCausalLM
+    print('GPTNEOX_IMPORT_OK')
+except Exception:
+    traceback.print_exc()
+    raise SystemExit('transformers import failed')
+"
 python -c "
 import torch
 ok = torch.cuda.is_available()
