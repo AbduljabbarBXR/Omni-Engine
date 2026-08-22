@@ -75,6 +75,8 @@ The key research question is whether a graph that learns from interaction beats 
                             LOGITS
 ```
 
+![Omni Engine architecture](docs/architecture.svg)
+
 ---
 
 ## Components
@@ -115,7 +117,7 @@ L = L_lm + lambda * L_aux
 
 ### Neighborhood Graph (`graph.py`)
 
-* `small_world` builds a ring lattice with random long range shortcuts, producing a topology with dense local structure and sparse global reach.
+* `small_world` builds a ring lattice with random far reaching shortcuts, producing a topology with dense local structure and sparse global reach.
 * `MessagePassing` carries edge weights as learnable parameters masked by the adjacency matrix.
 * For each message round, every active expert mixes a fraction of its neighbors' outputs:
 
@@ -328,9 +330,9 @@ Findings:
 * The neighborhood graph beats flat routing by 52 perplexity points, a 40 percent gap. Local message passing between active clusters is not decoration; it recovers most of the gap to the frozen base.
 * Combining the graph with Hebbian plasticity gives the best result of the matrix. The mechanisms compose.
 * Hebbian plasticity alone matches flat routing. It neither helps nor harms at this scale.
-* No configuration crossed the frozen base at 400 steps. The expansion recovers most of the damage but remains net negative. Longer runs are the next experiment.
+* No configuration crossed the frozen base at 400 steps. The expansion recovers most of the damage but remains net negative. Extended runs are the next experiment.
 
-### Long Horizon Runs with Delta Penalty
+### Extended Runs with Delta Penalty
 
 A 400 step run is a short window. The first 2000 step runs diverged catastrophically because nothing bounded the residual deltas. The fix is a delta magnitude penalty in the loss, which creates an equilibrium: a delta only survives if it reduces loss enough to justify its size.
 
@@ -349,6 +351,8 @@ Findings:
 * Training is stable over 2000 steps: loss descends to 3.40, delta magnitude stays bounded near 0.17, routing utilization stays full.
 * The graph advantage seen at 400 steps disappears at 2000 steps. The graph speeds convergence but does not change the asymptote.
 * Convergence speed still matters for the on device setting, where learning happens in short bursts. The graph is the right tool for adaptive learning even without an asymptotic gain.
+
+![Perplexity results at 2000 steps](docs/results.svg)
 
 The full console log of this run is stored under `runs/` artifacts in the repository history.
 
@@ -390,7 +394,7 @@ runs/           checkpoints, configs, memory stores
 
 ## Roadmap
 
-* Longer 2000 step runs to cross the frozen base perplexity
+* Extended 2000 step runs to cross the frozen base perplexity
 * Quantized inference for the frozen base
 * Prefetch scheduler for expert and memory loading
 * Retrieval injection into message passing

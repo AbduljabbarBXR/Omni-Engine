@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 770" font-family="system-ui, sans-serif">
+  <rect width="960" height="770" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="24" font-weight="600" fill="#0f172a">Omni Engine Architecture</text>
+  <text x="480" y="56" text-anchor="middle" font-size="13" fill="#64748b">Frozen foundation, sparse expert clusters, neighborhood graph, Hebbian plasticity, SQLite memory</text>
+
+  <rect x="380" y="76" width="200" height="44" rx="8" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <text x="480" y="104" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">Text Tokens</text>
+
+  <line x1="480" y1="120" x2="480" y2="146" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="480,152 474,142 486,142" fill="#2563eb"/>
+
+  <rect x="300" y="152" width="360" height="58" rx="8" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+  <text x="480" y="177" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Frozen Foundation</text>
+  <text x="480" y="197" text-anchor="middle" font-size="12" fill="#475569">Pythia 160M, weights locked, fp16</text>
+
+  <line x1="480" y1="210" x2="480" y2="236" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="480,242 474,232 486,232" fill="#2563eb"/>
+  <text x="492" y="230" font-size="11" fill="#475569">hidden states h[8..11]</text>
+
+  <rect x="80" y="242" width="180" height="62" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="390" y="242" width="180" height="62" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="700" y="242" width="180" height="62" rx="8" fill="#f8fafc" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="170" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">Router</text>
+  <text x="480" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">Router</text>
+  <text x="790" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">Router</text>
+  <text x="170" y="288" text-anchor="middle" font-size="10" fill="#64748b">linear projection</text>
+  <text x="480" y="288" text-anchor="middle" font-size="10" fill="#64748b">linear projection</text>
+  <text x="790" y="288" text-anchor="middle" font-size="10" fill="#64748b">linear projection</text>
+
+  <line x1="170" y1="304" x2="170" y2="328" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="170,334 164,324 176,324" fill="#2563eb"/>
+  <line x1="480" y1="304" x2="480" y2="328" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="480,334 474,324 486,324" fill="#2563eb"/>
+  <line x1="790" y1="304" x2="790" y2="328" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="790,334 784,324 796,324" fill="#2563eb"/>
+  <text x="492" y="324" font-size="11" fill="#475569">top k selection</text>
+
+  <rect x="80" y="334" width="180" height="64" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <rect x="390" y="334" width="180" height="64" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <rect x="700" y="334" width="180" height="64" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <text x="170" y="360" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Expert Cluster</text>
+  <text x="480" y="360" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Expert Cluster</text>
+  <text x="790" y="360" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Expert Cluster</text>
+  <text x="170" y="382" text-anchor="middle" font-size="10" fill="#64748b">8 MLP experts</text>
+  <text x="480" y="382" text-anchor="middle" font-size="10" fill="#64748b">8 MLP experts</text>
+  <text x="790" y="382" text-anchor="middle" font-size="10" fill="#64748b">8 MLP experts</text>
+
+  <line x1="170" y1="398" x2="170" y2="438" stroke="#2563eb" stroke-width="1.5"/>
+  <line x1="480" y1="398" x2="480" y2="438" stroke="#2563eb" stroke-width="1.5"/>
+  <line x1="790" y1="398" x2="790" y2="438" stroke="#2563eb" stroke-width="1.5"/>
+  <polygon points="170,444 164,434 176,434" fill="#2563eb"/>
+  <polygon points="480,444 474,434 486,434" fill="#2563eb"/>
+  <polygon points="790,444 784,434 796,434" fill="#2563eb"/>
+
+  <circle cx="480" cy="470" r="85" fill="none" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="480" y1="385" x2="540" y2="400" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="540" y1="400" x2="565" y2="470" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="565" y1="470" x2="540" y2="540" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="540" y1="540" x2="480" y2="555" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="480" y1="555" x2="420" y2="540" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="420" y1="540" x2="395" y2="470" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="395" y1="470" x2="420" y2="400" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="420" y1="400" x2="480" y2="385" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="480" y1="385" x2="565" y2="470" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+  <line x1="540" y1="540" x2="420" y2="540" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+  <line x1="420" y1="400" x2="540" y2="400" stroke="#94a3b8" stroke-width="1.5" opacity="0.6"/>
+  <g font-size="10" font-weight="600" fill="#ffffff" text-anchor="middle">
+    <circle cx="480" cy="385" r="13" fill="#2563eb"/><text x="480" y="389">E0</text>
+    <circle cx="540" cy="400" r="13" fill="#2563eb"/><text x="540" y="404">E1</text>
+    <circle cx="565" cy="470" r="13" fill="#2563eb"/><text x="565" y="474">E2</text>
+    <circle cx="540" cy="540" r="13" fill="#2563eb"/><text x="540" y="544">E3</text>
+    <circle cx="480" cy="555" r="13" fill="#2563eb"/><text x="480" y="559">E4</text>
+    <circle cx="420" cy="540" r="13" fill="#2563eb"/><text x="420" y="544">E5</text>
+    <circle cx="395" cy="470" r="13" fill="#2563eb"/><text x="395" y="474">E6</text>
+    <circle cx="420" cy="400" r="13" fill="#2563eb"/><text x="420" y="404">E7</text>
+  </g>
+  <text x="480" y="600" text-anchor="middle" font-size="11" fill="#475569">small world graph: message passing between active clusters</text>
+  <text x="480" y="616" text-anchor="middle" font-size="10" fill="#94a3b8">Hebbian co activation strengthens used edges, SQLite stores weights and memories</text>
+
+  <line x1="480" y1="630" x2="480" y2="652" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="480,658 474,648 486,648" fill="#2563eb"/>
+
+  <rect x="380" y="658" width="200" height="44" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="1.5"/>
+  <text x="480" y="686" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Weighted Sum</text>
+
+  <line x1="480" y1="702" x2="480" y2="714" stroke="#2563eb" stroke-width="2"/>
+  <polygon points="480,720 474,710 486,710" fill="#2563eb"/>
+  <text x="492" y="716" font-size="11" fill="#475569">final hidden + deltas</text>
+</svg>

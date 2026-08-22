@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" font-family="system-ui, sans-serif">
+  <rect width="800" height="480" fill="#ffffff"/>
+  <text x="400" y="36" text-anchor="middle" font-size="22" font-weight="600" fill="#0f172a">Perplexity at 2000 steps</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#64748b">Lower is better. Every Omni configuration crosses the frozen base.</text>
+
+  <line x1="180" y1="92" x2="180" y2="380" stroke="#cbd5e1" stroke-width="1.5"/>
+  <line x1="702" y1="92" x2="702" y2="380" stroke="#64748b" stroke-width="1.5"/>
+  <text x="702" y="86" text-anchor="middle" font-size="10" fill="#64748b">frozen base level 37.31</text>
+
+  <rect x="180" y="110" width="522" height="36" rx="4" fill="#64748b"/>
+  <rect x="180" y="166" width="439" height="36" rx="4" fill="#2563eb"/>
+  <rect x="180" y="222" width="439" height="36" rx="4" fill="#2563eb"/>
+  <rect x="180" y="278" width="439" height="36" rx="4" fill="#2563eb"/>
+  <rect x="180" y="334" width="439" height="36" rx="4" fill="#2563eb"/>
+
+  <g font-size="13" font-weight="600" fill="#1e293b" text-anchor="end">
+    <text x="168" y="133">frozen base</text>
+    <text x="168" y="189">flat</text>
+    <text x="168" y="245">graph</text>
+    <text x="168" y="301">hebbian</text>
+    <text x="168" y="357">full</text>
+  </g>
+  <g font-size="12" font-weight="600" fill="#0f172a">
+    <text x="710" y="133">37.31</text>
+    <text x="627" y="189">31.38</text>
+    <text x="627" y="245">31.38</text>
+    <text x="627" y="301">31.37</text>
+    <text x="627" y="357">31.36</text>
+  </g>
+
+  <text x="180" y="420" font-size="11" fill="#475569">delta penalty 0.1, 100 held out blocks, Pythia 160M frozen</text>
+  <text x="180" y="440" font-size="11" fill="#475569">flat, graph, hebbian and full beat the base by about 16 percent</text>
+</svg>
