@@ -401,7 +401,9 @@ The first slice of the dual harness: output side experts that read the top 64 ca
 | WikiText | 49.44 | 33.64 | 33.53 | -0.11 |
 | Shakespeare | 37.31 | 31.36 | 31.32 | -0.04 |
 
-The self correction mechanism improves both domains and harms neither. The effect is small but consistent, and training stays stable to 2000 steps. The next slice adds the bridge: input side states informing the output router.
+The self correction mechanism improves both domains and harms neither. The effect is small but consistent, and training stays stable to 2000 steps.
+
+The bridge variant, where the corrected hidden state also feeds the output router, was tested and produced a null result: WikiText 33.52 and Shakespeare 31.37, statistically identical to the bridge free run. The router's own logits already carry the signal it needs.
 
 ---
 
